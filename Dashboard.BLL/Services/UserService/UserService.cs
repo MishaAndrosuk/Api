@@ -136,6 +136,17 @@ namespace Dashboard.BLL.Services.UserService
             return ServiceResponse.GetOkResponse(message: "Користувача отримано", payload: model);
         }
 
+        public async Task<ServiceResponse> AddToRolesAsync(string id, IEnumerable<string> roles)
+        {
+            var responce = await _userRepository.AddToRolesAsync(id, roles);
+
+            if (responce.Succeeded)
+            {
+                return ServiceResponse.GetOkResponse("Ролі успішно додано");
+            }
+
+            return ServiceResponse.GetInternalServerErrorResponse(responce.Errors.First().Description);
+        }
         public async Task<ServiceResponse> UpdateAsync(UserVM model)
         {
             var user = await _userRepository.GetUserByIdAsync(model.Id.ToString(), true);

@@ -1,6 +1,7 @@
 ﻿using Dashboard.BLL.Services;
 using Dashboard.BLL.Services.UserService;
 using Dashboard.BLL.Validators;
+using Dashboard.DAL.Models.Identity;
 using Dashboard.DAL.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -103,6 +104,18 @@ namespace Dashboard.API.Controllers
         {
             var response = await _userService.DeleteAsync(id);
             return await GetResultAsync(response);
+        }
+
+        [HttpPost("AddRolsesToUser")]
+        public async Task<IActionResult> AddRolesAsync([FromBody] UserRoleVM model)
+        {
+            if (model.Roles == null)
+            {
+                return BadRequest("Ролі не знайдено");
+            }
+            var responce = await _userService.AddToRolesAsync(model.UserId, model.Roles);
+
+            return await GetResultAsync(responce);
         }
 
         [HttpGet]

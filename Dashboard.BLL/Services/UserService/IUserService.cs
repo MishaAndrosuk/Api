@@ -11,6 +11,7 @@ namespace Dashboard.BLL.Services.UserService
         Task<ServiceResponse> GetByIdAsync(string id);
         Task<ServiceResponse> GetByEmailAsync(string email);
         Task<ServiceResponse> GetByUserNameAsync(string userName);
+        Task<ServiceResponse> AddToRolesAsync(string id, IEnumerable<string> roles);
         Task<ServiceResponse> AddImageFromUserAsync(UserImageVM model);
     }
 }

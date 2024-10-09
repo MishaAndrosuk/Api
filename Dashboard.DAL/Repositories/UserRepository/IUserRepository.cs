@@ -13,7 +13,7 @@ namespace Dashboard.DAL.Repositories.UserRepository
         Task<User?> GetUserByNameAsync(string userName, bool includes = false);
         Task<User?> GetUserByIdAsync(string id, bool includes = false);
         Task<User?> SignUpAsync(User model, string password);
-        Task<IdentityResult> AddToRoleAsync(string id, string role);
+        Task<IdentityResult> AddToRolesAsync(string id, IEnumerable<string> roles);
         Task<string?> GenerateEmailConfirmationTokenAsync(User model);
         Task<string> GenerateResetPasswordTokenAsync(User model);
         Task<IdentityResult> CreateAsync(User model, string password, string role);

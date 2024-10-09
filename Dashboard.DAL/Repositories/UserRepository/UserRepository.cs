@@ -15,17 +15,6 @@ namespace Dashboard.DAL.Repositories.UserRepository
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> AddToRoleAsync(string id, string role)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                return IdentityResult.Failed(new IdentityError { Description = $"User {id} not found" });
-            }
-
-            return await _userManager.AddToRoleAsync(user, role);
-        }
 
         public async Task<bool> CheckEmailAsync(string email)
         {
@@ -140,7 +129,15 @@ namespace Dashboard.DAL.Repositories.UserRepository
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             return result;
         }
-
+        public async Task<IdentityResult> AddToRolesAsync(string id, IEnumerable<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"User {id} not found" });
+            }
+            return await _userManager.AddToRolesAsync(user, roles);
+        }
         public async Task<IdentityResult> SetRoleAsync(User user, string role)
         {
             if (await _userManager.IsInRoleAsync(user, role))

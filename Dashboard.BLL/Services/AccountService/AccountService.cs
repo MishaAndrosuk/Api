@@ -51,12 +51,18 @@ namespace Dashboard.BLL.Services.AccountService
                 return ServiceResponse.GetBadRequestResponse(message: "Помилка реєстрації", errors: "Не вдалося зареєструвати користувача");
             }
 
+            var tokens = await _jwtService.GenerateTokensAsync(user);
             var token = await _userRepository.GenerateEmailConfirmationTokenAsync(user);
             await _emailService.SendConfirmitaionEmailMessageAsync(userVM, token);
 
-            await _userRepository.AddToRoleAsync(user.Id.ToString(), Settings.UserRole);
+            await _userRepository.SetRoleAsync(user, Settings.UserRole);
 
-            return ServiceResponse.GetOkResponse("Успішна реєстрація", "token");
+            if(!tokens.Success)
+            {
+                return ServiceResponse.GetBadRequestResponse(message: "Помилка реєстрації", errors: "Не той токен");
+            }
+
+            return ServiceResponse.GetOkResponse("Успішна реєстрація", tokens.Payload);
         }
 
         public async Task<ServiceResponse> SignInAsync(SignInVM model)

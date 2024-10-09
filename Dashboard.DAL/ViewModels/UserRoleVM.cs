@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Dashboard.DAL.ViewModels
 {
-    internal class UserRoleVM
+    public class UserRoleVM
     {
+        public string UserId { get; set; }
+        public List<string> Roles { get; set; }
     }
 }
